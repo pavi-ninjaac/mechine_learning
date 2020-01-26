@@ -1,0 +1,61 @@
+import numpy as np
+import matplotlib.pyplot as plt
+import pandas as pd
+from sklearn.datasets import load_iris
+from sklearn.model_selection import train_test_split
+from sklearn.naive_bayes import GaussianNB
+from sklearn import neighbors
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.metrics import accuracy_score
+
+
+iris_data=load_iris()
+
+
+#get the keys of the dataset dictionary
+print('iris dataset-keys{}'.format(iris_data.keys()))
+print('iris dataset-target_names{}'.format(iris_data['target_names']))
+print('iris dataset-feature names{}'.format(iris_data['feature_names']))
+print('iris dataset-datas{}'.format(iris_data['data'][:6]))
+print('iris dataset-datas{}'.format(iris_data.data[:6]))
+#target values
+print('iris dataset-target{}'.format(iris_data['target']))
+
+
+#here first group beloned to the firdt classify and so on
+#storing the data  values 2D data
+X=iris_data.data #storing the target values
+y=iris_data.target
+print('data target',y)
+print('y shape{}'.format(np.shape(y)))
+#split as train and test data
+#providing test dataset size .5
+x_train,x_test,y_train,y_test=train_test_split(X,y,test_size=.5)
+
+
+#train neighbor classifier
+for i in range(1,10,1):
+    classifier=neighbors.KNeighborsClassifier(n_neighbors=i)
+    classifier.fit(x_train,y_train)
+    y_predict=classifier.predict(x_test)
+    socre=accuracy_score(y_test,y_predict)
+    print('accurecy score of Kneighbors classifiern-neighbours{},{}'.format(i,socre))
+
+
+
+#GassioonNB classification
+classifier2=GaussianNB()
+classifier2.fit(x_train,y_train)
+y_predict=classifier2.predict(x_test)
+print('predicted values{}'.format(y_predict))
+socre_gassionNB=accuracy_score(y_test,y_predict)
+print('accurecy score of GasssionNB classifier{}'.format(socre_gassionNB))
+
+
+#tree classifier
+classifier3=DecisionTreeClassifier()
+classifier3.fit(x_train,y_train)
+y_predict=classifier3.predict(x_test)
+print('predicted values{}'.format(y_predict))
+socre_Desiontree=accuracy_score(y_test,y_predict)
+print('accurecy score of Desion tree classifier{}'.format(socre_Desiontree))
