@@ -66,9 +66,14 @@ dataset['income_catogiry']=pd.cut(dataset["median_income"],
                                    labels=[1, 2, 3, 4, 5])
 dataset["income_catogiry"].hist()                                           
 
+from sklearn.model_selection import StratifiedShuffleSplit
+split = StratifiedShuffleSplit(n_splits=1, test_size=0.2, random_state=42) 
+for train_index, test_index in split.split(dataset, dataset["income_catogiry"]):    
+    strat_train_set = dataset.loc[train_index]    
+    strat_test_set = dataset.loc[test_index]
 
-
-
+for set_ in (strat_train_set, strat_test_set):    
+    set_.drop("income_catogiry", axis=1, inplace=True)
 
 
 
